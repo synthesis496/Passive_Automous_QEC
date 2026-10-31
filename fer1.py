@@ -8,6 +8,8 @@ import jax.scipy.linalg as jla
 
 class FermisonEngineUltraJAX:
     def __init__(self, N=32, gamma=0.1, tau0=1.0, alpha=0.5):
+        if N <= 0:
+            raise ValueError("N must be a positive integer.")
         self.N = int(N)
         self.gamma = float(gamma)
         self.tau0 = float(tau0)
@@ -43,7 +45,7 @@ class FermisonEngineUltraJAX:
         return -1j * (jnp.kron(self.H_eff, I) - jnp.kron(I, self.H_eff.T))
 
     def fibonacci_sequence(self, n):
-        idx = jnp.arange(n)
+        idx = jnp.arange(max(1, int(n)))
         values = (self.phi ** idx - self.psi ** idx) / jnp.sqrt(5.0)
         return jnp.round(jnp.real(values)).astype(int)
 
@@ -54,6 +56,9 @@ class FermisonEngineUltraJAX:
         return jnp.sum(amp * jnp.cos(phase))
 
     def mirror_transform(self, x):
+        x = jnp.asarray(x)
+        if x.ndim == 0:
+            return x
         if x.ndim == 1:
             return self.R_mirror @ x
         if x.ndim == 2:
@@ -64,18 +69,20 @@ class FermisonEngineUltraJAX:
         return x + self.mirror_transform(x)
 
     def attractor_map(self, z, a=-0.5, beta=1.0):
+        z = jnp.asarray(z)
         return jnp.exp((a + 1j * beta) * z)
 
     def limit_cycle(self, z0, iterations=1000, a=-0.5, beta=1.0):
-        z = z0
-        for _ in range(iterations):
+        z = jnp.asarray(z0)
+        for _ in range(max(0, int(iterations))):
             z = self.attractor_map(z, a, beta)
         return z
 
     @jax.jit
     def evolve_ultra(self, rho0, steps, dt=0.01, omega_clock=1.0):
+        rho0 = jnp.asarray(rho0, dtype=complex)
         H_super = self._build_dynamic_hamiltonian()
-        rho_vec_init = jnp.asarray(rho0, dtype=complex).reshape(-1)
+        rho_vec_init = rho0.reshape(-1)
 
         def time_step_scan(carry_rho_vec, step_idx):
             t = step_idx * dt
@@ -86,7 +93,7 @@ class FermisonEngineUltraJAX:
             next_rho_vec = jla.expm(generator * dt) @ carry_rho_vec
             return next_rho_vec, next_rho_vec
 
-        final_rho_vec, _ = jax.lax.scan(time_step_scan, rho_vec_init, jnp.arange(steps))
+        final_rho_vec, _ = jax.lax.scan(time_step_scan, rho_vec_init, jnp.arange(int(steps)))
         return final_rho_vec.reshape((self.N, self.N))
 
     def attractor_fidelity(self, rho0, steps=500, dt=0.01, omega_clock=1.0):
