@@ -1,20 +1,53 @@
 # Passive Autonomous QEC
 
-A small experimental Python project exploring a passive, autonomous quantum-error-correction-inspired dynamical model driven by Fibonacci-like temporal structure, mirror symmetry cancellation, and dissipative attractor dynamics.
+A lightweight experimental Python project exploring a passive, autonomous, Fibonacci-tempered error-correction-inspired dynamical model. The system is designed around a non-linear temporal structure rather than ordinary linear time steps such as 1, 2, 3, ...
 
 ## Overview
 
-This repository contains two prototype implementations:
+This repository is a small research prototype for a self-designed concept: suppressing thermal-like noise and stabilizing a quantum-inspired state by using a Fibonacci clock instead of ordinary linear time progression.
 
-- `fer1.py` — a JAX-based simulation of a dissipative, Fibonacci-clock-driven quantum-like system.
-- `fer_infinity.py` — a lightweight NumPy prototype implementing the same conceptual ideas in an algebraic and scalar form.
+The core theme is simple:
 
-The code is not a full production library or package. It is a research prototype aimed at exploring how:
+- ordinary time is treated as a uniform sequence of steps
+- Fibonacci time introduces a non-uniform schedule based on the golden ratio
+- the system modulates its dynamics according to this temporal structure
+- mirror-like cancellation and dissipative attractor dynamics are used as passive stabilization mechanisms
 
-- Fibonacci time signals can be used as dynamic modulation,
-- mirror symmetry / cancellation terms affect state evolution,
-- dissipative Lindblad-like dynamics can steer the system toward an attractor,
-- residual heat and fidelity-like measures can be tracked numerically.
+This is not a production QEC stack. It is a prototype for exploring a model of autonomous stabilization and noise suppression.
+
+---
+
+## Why Fibonacci time?
+
+The repository is built around the idea that thermal-like noise can be reduced by avoiding a rigid linear clock.
+
+Instead of using a uniform timeline such as:
+
+1, 2, 3, 4, 5, ...
+
+this model uses a Fibonacci-tempered signal in which the effective time structure is distributed according to recursive golden-ratio scaling:
+
+- Fibonacci sequence: 1, 1, 2, 3, 5, 8, 13, 21, ...
+- golden-ratio scaling: φ ≈ 1.618
+- temporal modulation is non-uniform and phase-sensitive
+
+This creates a clock structure that is less rigid than standard time stepping and is intended to distribute energy and suppress accumulation of heat-like residuals in a passive way.
+
+---
+
+## Core concepts
+
+### 1. Fibonacci clock modulation
+The main simulation uses a Fibonacci-like temporal signal to modulate the action of a dissipative system.
+
+### 2. Mirror / parity cancellation
+A mirror transform is applied to the state and combined with the original state to create cancellation-like behavior.
+
+### 3. Dissipative attractor dynamics
+The system is evolved under a Lindblad-like dissipative structure using a dynamic generator, driving the state toward an attractor-like steady configuration.
+
+### 4. Residual diagnostics
+The prototype tracks quantities similar to residual heat and attractor fidelity to monitor how much unstable structure remains after the evolution.
 
 ---
 
@@ -23,148 +56,84 @@ The code is not a full production library or package. It is a research prototype
 ```text
 Passive_Automous_QEC/
 ├── README.md
+├── LICENSE
+├── requirements.txt
 ├── fer1.py
 ├── fer_infinity.py
 ├── fermi_pic_qec.jpg
 ├── graph_fermiqec.jpg
 ├── graph_fermiqecb.jpg
-├── LICENSE
-└── ...
+├── docs/
+│   ├── README.md
+│   ├── overview.md
+│   └── usage.md
+└── .gitignore
 ```
-
-### Files
-
-- `fer1.py`
-  - Main experimental implementation.
-  - Uses JAX and JAX NumPy.
-  - Defines a `FermisonEngineUltraJAX` class.
-
-- `fer_infinity.py`
-  - Conceptual / scalar prototype.
-  - Uses NumPy for simpler computations.
-  - Implements Fibonacci time, mirror operations, healing, anti-resonance, and spectral density helpers.
-
-- `fermi_pic_qec.jpg`, `graph_fermiqec.jpg`, `graph_fermiqecb.jpg`
-  - Visual outputs or experiment plots for the QEC-style dynamics.
 
 ---
 
-## Main implementation: `fer1.py`
+## Project files
 
-`fer1.py` introduces the class:
-
-```python
-FermisonEngineUltraJAX
-```
-
-It models a dissipative quantum-like system with the following concepts:
-
-### 1. Fibonacci clock modulation
-The code builds a signal via:
-
-```python
-fibonacci_clock_signal(self, omega, modes=64)
-```
-
-This uses a golden-ratio-based frequency structure:
-
-```python
-amp = self.phi ** (-self.alpha * m)
-phase = self.phi ** m * omega * self.tau0
-```
-
-This creates a modulation pattern reminiscent of a Fibonacci-driven temporal clock.
-
-### 2. Mirror cancellation
-The class includes:
-
-```python
-mirror_transform(self, x)
-mirror_cancellation(self, x)
-```
-
-These apply a mirror / reversal transformation to the state and combine it with the original state to emulate symmetric cancellation effects.
-
-### 3. Attractor and limit-cycle dynamics
-The model includes:
-
-```python
-attractor_map(self, z, a=-0.5, beta=1.0)
-limit_cycle(self, z0, iterations=1000, a=-0.5, beta=1.0)
-```
-
-This implements a complex attractor map of the form:
-
-```python
-exp((a + i * beta) * z)
-```
-
-representing a dissipative/contractive dynamic flow.
-
-### 4. Lindblad-like evolution
-The evolution routine is:
-
-```python
-evolve_ultra(self, rho0, steps, dt=0.01, omega_clock=1.0)
-```
-
-It constructs a dynamic Liouvillian-like generator using:
-
-- a Hamiltonian contribution,
-- a dynamic Lindblad generator,
-- a Fibonacci-clock-controlled gate operator.
-
-This mimics a dissipative quantum evolution process in which the clock signal modulates the error/healing dynamics.
-
-### 5. Observables
-The class also defines:
-
-- `attractor_fidelity(rho0, steps=500, dt=0.01, omega_clock=1.0)`
-- `residual_heat(rho0, steps=500, dt=0.01, omega_clock=1.0)`
-
-These metrics summarize the state’s tendency toward a stable attractor and the leftover non-thermal or residual contribution after evolution.
+- `fer1.py` — main JAX-based prototype implementing the dynamic model
+- `fer_infinity.py` — lighter NumPy-based companion prototype
+- `fermi_pic_qec.jpg` — visual reference image
+- `graph_fermiqec.jpg` — recurrent Fibonacci-tempered dynamics plot
+- `graph_fermiqecb.jpg` — second visual diagnostic plot
+- `docs/` — documentation and usage notes
+- `requirements.txt` — dependency list
 
 ---
 
-## Secondary prototype: `fer_infinity.py`
+## Visual diagnostics
 
-This file is a simpler, more algebraic prototype that captures the conceptual ingredients without JAX acceleration.
+These plots are included as visual evidence of the experimental dynamics and timing behavior.
 
-It defines functions for:
+![Fibonacci-tempered dynamics](./graph_fermiqec.jpg)
+
+![Residual / attractor diagnostics](./graph_fermiqecb.jpg)
+
+![Conceptual QEC style visualization](./fermi_pic_qec.jpg)
+
+---
+
+## Main implementation
+
+The primary simulation engine is in `fer1.py`. It uses JAX and models a dissipative quantum-like system with:
+
+- Fibonacci clock modulation
+- mirror transformation / cancellation
+- attractor map and limit-cycle behavior
+- dynamic Liouvillian-like generator
+- attractor fidelity and residual heat metrics
+
+The core idea is that the system does not evolve under a rigid linear time schedule, but under a Fibonacci-tempered temporal rhythm designed to suppress noise accumulation.
+
+---
+
+## Lightweight companion
+
+`fer_infinity.py` is a simpler NumPy-based prototype for exploring the same concept in a small and transparent way.
+
+This file includes:
 
 - Fibonacci sequence generation
-- Fibonacci time sampling
-- amplitude and phase generation
-- mirror symmetry operations
-- healing and Lindblad-style evolution
-- anti-resonance and spectral density calculation
-- convergence partial sums
+- Fibonacci temporal sampling
+- amplitude and phase construction
+- mirror operations
+- healing / dissipative step logic
+- spectral-density style calculations
 
-Examples of key functions:
-
-- `fibonacci_sequence(n_max)`
-- `fibonacci_time(n_max)`
-- `fibonacci_amplitudes(n_max)`
-- `mirror(state)`
-- `heal(state, dt)`
-- `lindblad_step(state, dt)`
-- `anti_resonance(omega, n_max)`
-- `spectral_density(omega, n_max)`
-
-This file acts more like a symbolic or analytical prototype for the JAX implementation.
+It serves as a simpler symbolic or analytical companion to the JAX prototype.
 
 ---
 
-## Dependencies
+## Installation
 
-### Python packages
+```bash
+pip install -r requirements.txt
+```
 
-- `numpy`
-- `jax`
-- `jax.numpy`
-- `jax.scipy.linalg`
-
-Install with:
+If needed, the direct dependencies are:
 
 ```bash
 pip install numpy jax jaxlib
@@ -172,16 +141,29 @@ pip install numpy jax jaxlib
 
 ---
 
-## Example usage
+## Quick start
 
-### JAX prototype
+### Run the JAX prototype
+
+```bash
+python fer1.py
+```
+
+### Run the NumPy companion
+
+```bash
+python fer_infinity.py
+```
+
+---
+
+## Example usage
 
 ```python
 from fer1 import FermisonEngineUltraJAX
 import jax.numpy as jnp
 
 engine = FermisonEngineUltraJAX(N=32, gamma=0.1, tau0=1.0, alpha=0.5)
-
 rho0 = jnp.eye(32, dtype=complex) / 32
 
 rho_final = engine.evolve_ultra(rho0, steps=200, dt=0.01, omega_clock=1.0)
@@ -189,43 +171,30 @@ print(engine.attractor_fidelity(rho0, steps=200, dt=0.01, omega_clock=1.0))
 print(engine.residual_heat(rho0, steps=200, dt=0.01, omega_clock=1.0))
 ```
 
-### NumPy prototype
-
-```python
-from fer_infinity import fibonacci_sequence, spectral_density
-
-seq = fibonacci_sequence(20)
-print(seq)
-print(spectral_density(1.0, 20))
-```
-
 ---
 
 ## Scientific interpretation
 
-The code is best understood as a toy model combining three ideas:
+This project is best understood as an exploratory model for passive autonomous stabilization.
 
-1. Fibonacci-based temporal modulation
-2. mirror / parity cancellation structure
-3. dissipative attractor dynamics for approximate autonomous stabilization
+The idea is:
 
-This is conceptually related to:
+- a system can be driven by a non-linear temporal rhythm,
+- noise-like fluctuations can be smeared or reduced through Fibonacci modulation,
+- mirror symmetry acts as an internal balancing operation,
+- dissipative dynamics steer the system toward an attractor-like stable region,
+- residual heat and attractor fidelity act as simple qualitative diagnostics.
 
-- passive error-correction ideas,
-- dissipative state stabilization,
-- control-inspired quantum dynamics,
-- nontrivial time-ordered modulation using Fibonacci-like frequencies.
-
-It is not yet a benchmarked or peer-reviewed QEC implementation; it is an exploratory numerical model.
+This is not a validated quantum error correction system. It is a conceptual prototype for a non-linear, autonomous stabilizer inspired by Fibonacci time and mirror cancellation.
 
 ---
 
 ## Notes and limitations
 
-- The repository is a research prototype, not yet a full software package.
-- The code is experimental and may need cleanup, validation, and tests before being used as a serious simulation framework.
-- The naming suggests a link to autonomous passive QEC, but the implementation should be interpreted as a conceptual prototype rather than a complete QEC system.
-- The plots in the repository likely serve as proof-of-concept visuals for the dynamics under study.
+- This repository is a prototype, not a production-grade QEC engine.
+- It is experimental and exploratory by design.
+- It is intended as a sandbox for testing self-designed temporal and stabilizing ideas.
+- The code is useful for concept exploration, not for production deployment or benchmark claims.
 
 ---
 
@@ -237,4 +206,4 @@ See [LICENSE](./LICENSE).
 
 ## Summary
 
-This repository presents a compact numerical exploration of a Fibonacci-modulated, symmetry-aware, dissipative quantum dynamics model. The code is intentionally lightweight and experimental, but it captures a clear conceptual theme: using Fibonacci temporal structure and mirror-cancellation logic to steer a system toward a stable attractor-like state.
+This project explores a passive autonomous stabilization concept in which thermal-like noise is damped by a Fibonacci-tempered temporal clock rather than a conventional linear progression. The code is intentionally compact, experimental, and concept-driven, making it a suitable research sandbox for further exploration.
