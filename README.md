@@ -236,3 +236,7 @@ See [LICENSE](./LICENSE).
 ## Summary
 
 This project explores a passive autonomous stabilization concept in which thermal-like noise is damped by a Fibonacci-tempered temporal clock rather than a conventional linear progression. The code is intentionally compact, experimental, and concept-driven, making it a suitable research sandbox for further exploration.
+
+## Support & Star 🌟
+If you find this Quantum Error Correction architecture useful, or if it helps with your research, please consider giving this repository a **Star**! It helps increase visibility and keeps me motivated to maintain the project. 
+
