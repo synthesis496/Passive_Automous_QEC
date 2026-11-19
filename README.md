@@ -1,3 +1,16 @@
+## Architecture Overview (`fermison_architecture.py`)
+
+This module implements a 5-dimensional (`d = 5`) photonic-inspired passive quantum error correction (QEC) framework based on engineered Lindblad dissipation and non-uniform temporal modulation:
+
+- **Logical Codespace & Error Modes (`d = 5`):** States $|0\rangle, |1\rangle$ form the decoherence-free dark codespace, while $|2\rangle, |3\rangle, |4\rangle$ represent excitation/photon-loss error modes.
+- **Autonomous Healing (`L_heal`, `H_eff`, `L_super`):** Engineered jump operators continuously pump population from error states ($|2\rangle \to |0\rangle$, $|3\rangle \to |1\rangle$, $|4\rangle \to |0\rangle$) back into the logical subspace without active measurement or feedback.
+- **Mirror Parity Folding (`U_fold`, `build_omni_mirror_network`):** Anti-diagonal reflection operators enforcing parity symmetry across $N$ optical modes.
+- **Fibonacci Clock (`build_fibonacci_clock`):** Closed-form Binet temporal frequency modulation ($f_n = 1/F_n$) designed to suppress resonant noise accumulation.
+- **Analytical Diagnostics:** Built-in spectral checks (`validate_dark_state`, `validate_no_traps`, `validate_convergence`) verify Liouvillian spectral gap and dark-state stability.
+
+
+
+
 ## Original concept notice
 
 This repository contains an original conceptual framework developed by Chutiphong Bunloed, including the Fibonacci-tempered temporal model, mirror-cancellation dynamics, autonomous passive stabilization concept, and the associated notation and implementation structure.
