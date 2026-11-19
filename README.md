@@ -227,12 +227,6 @@ This is not a validated quantum error correction system. It is a conceptual prot
 
 ---
 
-## License
-
-See [LICENSE](./LICENSE).
-
----
-
 ## Summary
 
 This project explores a passive autonomous stabilization concept in which thermal-like noise is damped by a Fibonacci-tempered temporal clock rather than a conventional linear progression. The code is intentionally compact, experimental, and concept-driven, making it a suitable research sandbox for further exploration.
@@ -240,3 +234,4 @@ This project explores a passive autonomous stabilization concept in which therma
 ## Support & Star 🌟
 If you find this Quantum Error Correction architecture useful, or if it helps with your research, please consider giving this repository a **Star**! It helps increase visibility and keeps me motivated to maintain the project. 
 
+Chutiphong. (2026). synthesis496/Passive_Automous_QEC: update core&architec passive qec (Version v1.1.2) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.24368584
